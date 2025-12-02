@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Secret Santa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🎅 CompanyName Secret Santa 🎄</h1>
+            <p>Welcome to the 2024 Gift Exchange!</p>
+        </header>
+
+        <div id="reveal-view" class="hidden">
+            <h2>Your Assignment:</h2>
+            <div class="card">
+                <p>You are the Secret Santa for:</p>
+                <h1 id="target-name">...</h1>
+            </div>
+        </div>
+
+        <div id="admin-view">
+            <h3>Admin Panel</h3>
+            <textarea id="names-input" placeholder="Enter names separated by commas (Alice, Bob, Charlie...)"></textarea>
+            <button onclick="generateLinks()">Generate Links</button>
+            <div id="links-output"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
