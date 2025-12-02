@@ -3,30 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Secret Santa</title>
+    <title>Gear Fight Secret Santa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
+    <div class="overlay"></div>
+
+    <div class="main-container">
         <header>
-            <h1>🎅 CompanyName Secret Santa 🎄</h1>
-            <p>Welcome to the 2024 Gift Exchange!</p>
+            <h1>⚙️ GEAR FIGHT ⚙️</h1>
+            <h2>Mission: Secret Santa Exchange</h2>
         </header>
 
         <div id="reveal-view" class="hidden">
-            <h2>Your Assignment:</h2>
-            <div class="card">
-                <p>You are the Secret Santa for:</p>
+            
+            <div id="gear-loader">
+                <h3>ENGAGING MECHANISM...</h3>
+                <div class="gearbox">
+                    <svg class="gear gear-right" viewBox="0 0 512 512" width="100" height="100">
+                        <path fill="currentColor" d="M488.6 250.2L392 214V105.5c-11-13-25.3-24.1-42-32V29.7L256.4 0 162 29.7v43.8c-16.8 7.9-31 18.9-42 32V214L23.4 250.2 0 340.7l95.6 46.4 60.7-35c10.3 7.4 21.9 13.3 34.3 17.5l37.8 106.5 55.2 35.9 55.2-35.9 37.8-106.5c12.4-4.2 24-10.1 34.3-17.5l60.7 35 95.6-46.4-23.4-90.5zM256 362c-58.5 0-106-47.5-106-106s47.5-106 106-106 106 47.5 106 106-47.5 106-106 106z"/>
+                    </svg>
+                    <svg class="gear gear-left" viewBox="0 0 512 512" width="80" height="80">
+                        <path fill="currentColor" d="M488.6 250.2L392 214V105.5c-11-13-25.3-24.1-42-32V29.7L256.4 0 162 29.7v43.8c-16.8 7.9-31 18.9-42 32V214L23.4 250.2 0 340.7l95.6 46.4 60.7-35c10.3 7.4 21.9 13.3 34.3 17.5l37.8 106.5 55.2 35.9 55.2-35.9 37.8-106.5c12.4-4.2 24-10.1 34.3-17.5l60.7 35 95.6-46.4-23.4-90.5zM256 362c-58.5 0-106-47.5-106-106s47.5-106 106-106 106 47.5 106 106-47.5 106-106 106z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div id="final-card" class="card hidden-opacity">
+                <p>TARGET ACQUIRED:</p>
                 <h1 id="target-name">...</h1>
             </div>
         </div>
 
         <div id="admin-view">
-            <h3>Admin Panel</h3>
-            <textarea id="names-input" placeholder="Enter names separated by commas (Alice, Bob, Charlie...)"></textarea>
-            <button onclick="generateLinks()">Generate Links</button>
+            <div class="card admin-card">
+            <h3>Initiate Protocol</h3>
+            <p>Enter Operative names separated by commas:</p>
+            <textarea id="names-input" placeholder="Alice, Bob, Charlie, Diana..."></textarea>
+            <button class="cyber-button" onclick="generateLinks()">GENERATE LINKS</button>
             <div id="links-output"></div>
+            </div>
         </div>
     </div>
 
