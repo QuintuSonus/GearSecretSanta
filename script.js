@@ -2,53 +2,75 @@
 const params = new URLSearchParams(window.location.search);
 const encodedData = params.get('data');
 
+const adminView = document.getElementById('admin-view');
+const revealView = document.getElementById('reveal-view');
+const gearLoader = document.getElementById('gear-loader');
+const finalCard = document.getElementById('final-card');
+const targetNameDisplay = document.getElementById('target-name');
+
+
 if (encodedData) {
-    // If there is data, show the REVEAL view
-    document.getElementById('admin-view').classList.add('hidden');
-    document.getElementById('reveal-view').classList.remove('hidden');
+    // --- REVEAL SEQUENCE STARTS ---
+    adminView.classList.add('hidden');
+    revealView.classList.remove('hidden');
     
-    // Decode the base64 string
-    // Format is "ReceiverName"
+    // Ensure final card is hidden initially
+    finalCard.classList.add('hidden'); 
+    // Ensure gears are showing initially
+    gearLoader.classList.remove('hidden');
+
+    let decodedName = "";
     try {
-        const targetName = atob(encodedData); 
-        document.getElementById('target-name').innerText = targetName;
+        decodedName = atob(encodedData);
     } catch (e) {
-        document.getElementById('target-name').innerText = "Invalid Link!";
+        decodedName = "INVALID LINK DATA";
     }
 
+    // Set the name in the background while gears spin
+    targetNameDisplay.innerText = decodedName;
+
+    // WAIT 3 SECONDS, THEN SHOW RESULT
+    setTimeout(() => {
+        // Hide gears
+        gearLoader.classList.add('hidden');
+        // Show final card container
+        finalCard.classList.remove('hidden');
+        // Trigger CSS Fade In animation
+        setTimeout(() => {
+             finalCard.classList.add('fade-in-active');
+        }, 50); // Tiny delay to ensure CSS registers the state change
+       
+    }, 3000 /* 3000ms = 3 seconds wait */);
+
+
 } else {
-    // If no data, show the ADMIN view
-    document.getElementById('reveal-view').classList.add('hidden');
+    // SHOW ADMIN VIEW
+    revealView.classList.add('hidden');
+    adminView.classList.remove('hidden');
 }
 
-// 2. ADMIN GENERATOR LOGIC
+// 2. ADMIN GENERATOR LOGIC (Unchanged from before)
 function generateLinks() {
     const input = document.getElementById('names-input').value;
-    // Split names by comma and remove whitespace
     let names = input.split(',').map(name => name.trim()).filter(n => n);
     
     if (names.length < 2) {
-        alert("Need at least 2 people!");
+        alert("Need at least 2 operatives to engage protocol!");
         return;
     }
 
-    // Shuffle
     let shuffled = [...names].sort(() => Math.random() - 0.5);
     let linksHTML = "<ul>";
-
     const baseUrl = window.location.href.split('?')[0];
 
     for (let i = 0; i < shuffled.length; i++) {
         let giver = shuffled[i];
         let receiver = shuffled[(i + 1) % shuffled.length];
-
-        // We encode the receiver's name into Base64 so it's not readable text in the URL
         let secretCode = btoa(receiver);
         let uniqueLink = `${baseUrl}?data=${secretCode}`;
 
         linksHTML += `<li><strong>Link for ${giver}:</strong> <br> <input type="text" value="${uniqueLink}" readonly></li>`;
     }
-
     linksHTML += "</ul>";
     document.getElementById('links-output').innerHTML = linksHTML;
 }
