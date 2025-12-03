@@ -1,145 +1,258 @@
-/* --- GLOBAL THEME --- */
+/* --- NEW CARTOON COLOR PALETTE --- */
 :root {
-    --primary-color: #ff8c00; /* Industrial Orange */
-    --secondary-color: #2a2a2a; /* Dark Metal grey */
-    --bg-dark: #111111;
-    --text-light: #e0e0e0;
+    --cart-blue-dark: #004060;
+    --cart-blue-mid: #1063c0;
+    --cart-blue-bright: #2280e6;
+    --cart-pink: #ff00bb;
+    --cart-orange: #ffaa00;
+    --cart-yellow: #ffdd00;
+    --cart-outline: #000000;
+    --text-white: #ffffff;
 }
 
 body {
-    font-family: 'Chakra Petch', sans-serif;
-    /* --- REPLACE 'concept-bg.jpg' WITH YOUR IMAGE FILENAME --- */
-    background-image: url('concept-bg.jpg');
+    font-family: 'Fredoka', sans-serif;
+    background-image: url('background.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    color: var(--text-light);
+    background-color: var(--cart-blue-dark);
+    color: var(--text-white);
     margin: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
 }
 
-/* The dark tint over your concept art */
-.overlay {
+.background-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75); /* 75% dark overlay */
+    background: rgba(0, 30, 50, 0.1);
     z-index: -1;
 }
 
 .main-container {
-    /* Looks like a metal HUD interface */
-    background: rgba(42, 42, 42, 0.8); 
-    border: 3px solid var(--primary-color);
-    box-shadow: 0 0 25px rgba(255, 140, 0, 0.3), inset 0 0 10px rgba(0,0,0,0.5);
-    padding: 2.5rem;
-    border-radius: 15px; /* Slightly angled corners */
-    width: 90%;
+    /* Fallback color */
+    background-color: var(--cart-blue-mid);
+    
+    /* NEW: We draw the yellow lines using background gradients */
+    background: 
+        /* 1. Top Yellow Line (3px height) */
+        linear-gradient(var(--cart-yellow), var(--cart-yellow)) top left / 100% 4px no-repeat,
+        
+        /* 2. Bottom Yellow Line (3px height) */
+        linear-gradient(var(--cart-yellow), var(--cart-yellow)) bottom left / 100% 4px no-repeat,
+        
+        /* 3. The Main Blue Background Color (Fills the rest) */
+        var(--cart-blue-mid);
+
+    /* BORDER & SHAPE */
+    /*border: 6px solid var(--cart-outline);*/
+    border-radius: 30px;
+    
+    /* SHADOW: Removed the 'inset' lines, kept the 3D drop shadow */
+    box-shadow: 0px 3px 0px var(--cart-blue-dark);
+    
+    /* LAYOUT */
+    padding: 2rem;
+    width: 95%;
     max-width: 550px;
     text-align: center;
-    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden; /* Ensures the yellow lines get cut off cleanly at the corners */
 }
 
-h1 { margin: 0; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;}
-h2 { margin-top: 5px; font-weight: 400; color: #aaa; font-size: 1rem;}
+/* --- TYPOGRAPHY --- */
+header { margin-bottom: 0px; }
 
-.hidden { display: none; }
+/* STYLE FOR THE NEW GAME LOGO */
+.game-logo {
+    width: 80%;           /* Starts at 80% of the container width */
+    max-width: 300px;     /* Never gets wider than 400px */
+    height: auto;         /* Maintains aspect ratio */
+    margin: 0 auto 0px;  /* Centers horizontally, adds bottom margin */
+    display: block;       /* Ensures centering with margin: auto works */
+    filter: drop-shadow(4px 4px 0px black); /* Adds a cartoon shadow */
+}
 
-/* --- CARDS & INPUTS --- */
+/* Kept this for smaller titles in the app */
+.cartoon-title {
+    font-family: 'Titan One', cursive;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, var(--cart-yellow) 0%, var(--cart-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: --cart-yellow;
+    -webkit-text-stroke: 0px var(--cart-outline);
+    filter: drop-shadow(1px 1px 0px black);
+}
+
+.small-title { font-size: 2rem; margin: 0;}
+
+h2, h3, p {
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px black;
+    margin-top: 0;
+}
+
+.mission-text { color: var(--cart-yellow); font-size: 1.5rem;}
+.hidden { display: none !important; }
+
+/* --- MINI-GAME LAYOUT --- */
+/* style.css */
+.gear-stage {
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* <--- CHANGE THIS TO 0 */
+    margin: 30px 0;
+    align-items: center;
+}
+
+.gear-slot {
+    width: 130px; height: 130px;
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 50%;
+    background: var(--cart-blue-dark);
+    border: 5px solid var(--cart-blue-bright);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    overflow: visible;
+    margin-left: 0px; /* <--- ADJUST THIS NUMBER TO FIND THE SWEET SPOT */
+    position: relative; 
+           /* Ensures this gear sits ON TOP of the drive gear */
+}
+
+.engine-slot { 
+    overflow: visible; 
+    border: none;
+    background: none;
+    z-index: 1;  
+
+}
+
+.empty-slot {
+    border: 5px dashed var(--cart-blue-bright);
+    background: rgba(0, 85, 128, 0.5);
+    color: var(--cart-blue-bright);
+}
+
+.drag-hover { background: var(--cart-blue-bright); color: white; }
+
+/* --- GEAR VISUALS --- */
+.gear-img-fitted, .gear-img-pop {
+    object-fit: contain;
+    pointer-events: none;
+}
+.gear-img-fitted { width: 120%; height: 120%; }
+.gear-img-pop { width: 125%; height: 125%; }
+
+#santa-unit-gear { cursor: grab; width: 140px; height: 140px; display: flex; justify-content: center; align-items: center;}
+#santa-unit-gear.dragging { opacity: 0.5; }
+
+.spinning-fast { animation: spin-right 0.5s linear infinite; }
+.tick-rotate { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes spin-right { 100% { transform: rotate(360deg); } }
+/* 1. The Drive Gear: Spins smoothly and continuously */
+.spinning-continuous {
+    /* We use a CSS variable so JS can match this speed exactly */
+    animation: spin-right var(--spin-speed, 1s) linear infinite;
+}
+
+@keyframes spin-right { 
+    100% { transform: rotate(360deg); } 
+}
+
+/* 2. The Unit Gear: Moves fast, then stops (The "Snap" effect) */
+.snap-rotate {
+    /* Fast transition time (0.15s) creates the mechanical "click" feel */
+    transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+/* --- CARTOON PROGRESS BAR --- */
+.progress-track {
+    width: 90%; height: 35px;
+    background: var(--cart-blue-dark);
+    border: 4px solid var(--cart-outline);
+    margin: 0 auto 30px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+}
+#progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(to bottom, var(--cart-yellow), var(--cart-orange));
+    border-right: 4px solid var(--cart-outline);
+    transition: width 0.3s ease-out;
+}
+
+/* --- CARTOON BUTTONS --- */
+.controls-area {
+    display: flex; flex-direction: column; gap: 20px; align-items: center;
+    min-height: 200px;
+}
+
+.cartoon-button {
+    font-family: 'Titan One', cursive;
+    font-size: 1.5rem;
+    padding: 15px 40px;
+    border: 4px solid var(--cart-outline);
+    border-radius: 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 2px 2px 0px black;
+    box-shadow: 0px 8px 0px var(--cart-outline);
+    transition: all 0.1s ease;
+    width: 80%;
+}
+
+.blue-button { background: linear-gradient(to bottom, var(--cart-blue-bright) 0%, #0088cc 100%); }
+.pink-button {
+    background: repeating-linear-gradient(
+        45deg, var(--cart-pink), var(--cart-pink) 20px,
+        #d900a0 20px, #d900a0 40px
+    );
+}
+
+.cartoon-button:hover:not(.disabled) { transform: translateY(4px); box-shadow: 0px 4px 0px var(--cart-outline); }
+.cartoon-button:active:not(.disabled) { transform: translateY(8px); box-shadow: 0px 0px 0px var(--cart-outline); }
+
+.disabled { background: #555; color: #aaa; box-shadow: 0px 8px 0px #333; cursor: not-allowed; opacity: 0.8; }
+
+/* --- FINAL CARD & ADMIN --- */
 .card {
-    background: var(--secondary-color);
-    border: 2px solid #444;
-    color: var(--primary-color);
-    padding: 30px;
-    border-radius: 8px;
-    margin-top: 30px;
-    font-weight: bold;
-    box-shadow: inset 0 0 10px #000;
+    background: var(--cart-blue-bright);
+    border: 0px solid var(--cart-outline);
+    padding: 40px 20px; border-radius: 30px; margin-top: 30px;
+    /*box-shadow: inset 0 0 30px rgba(0,0,0,0.3);*/
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #target-name {
-    font-size: 2.5em;
-    color: white;
-    text-shadow: 0 0 10px var(--primary-color);
-    margin: 10px 0 0 0;
+    font-family: 'Titan One', cursive;
+    font-size: 3.5em; color: var(--cart-yellow);
+    background: linear-gradient(to bottom, var(--cart-yellow) 0%, var(--cart-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px var(--cart-outline);
+    filter: drop-shadow(4px 4px 0px black);
+    margin: 20px 0 0 0;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 textarea, input[type="text"] {
-    width: 100%;
-    box-sizing: border-box;
-    background: #1a1a1a;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    font-family: 'Chakra Petch', sans-serif;
-    padding: 10px;
-    margin-bottom: 10px;
+    width: 100%; box-sizing: border-box;
+    background: var(--cart-blue-dark);
+    border: 4px solid var(--cart-outline);
+    border-radius: 15px;
+    color: white;
+    font-family: 'Fredoka'; font-weight: 700; font-size: 1.1rem;
+    padding: 15px; margin-bottom: 20px;
 }
-textarea { height: 100px; }
-
-/* A cool Cyberpunk style button */
-.cyber-button {
-    background: var(--primary-color);
-    color: black;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    font-family: 'Chakra Petch', sans-serif;
-    cursor: pointer;
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); /* Angled shape */
-    transition: all 0.3s ease;
-}
-.cyber-button:hover {
-    background: white;
-    box-shadow: 0 0 15px var(--primary-color);
-}
-
-/* --- GEAR ANIMATION --- */
-#gear-loader {
-    margin-top: 40px;
-    color: var(--primary-color);
-}
-
-.gearbox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px;
-    /* Slight overlap to make them look meshed */
-    margin-left: -20px; 
-}
-
-.gear {
-    color: #555; /* Dark metal gear color */
-    filter: drop-shadow(0 0 5px var(--primary-color));
-}
-
-/* The animations defining rotation */
-@keyframes spin-right { 100% { transform: rotate(360deg); } }
-@keyframes spin-left { 100% { transform: rotate(-360deg); } }
-
-.gear-right {
-    animation: spin-right 4s linear infinite;
-    margin-right: -15px; /* Overlap */
-    z-index: 2;
-}
-.gear-left {
-    animation: spin-left 4s linear infinite;
-}
-
-/* FADE IN EFFECT FOR FINAL CARD */
-.hidden-opacity {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease-out;
-}
-.fade-in-active {
-    opacity: 1;
-    transform: translateY(0);
-}
-    
-#links-output ul { text-align: left; padding-left: 20px; color: #aaa;}
-#links-output li { margin-bottom: 15px; }
+textarea { height: 120px; }
+#links-output ul { text-align: left; padding-left: 0; list-style: none;}
+#links-output li { margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 3px solid var(--cart-outline);}
+#links-output input { margin-top: 10px; font-size: 0.9rem;}
